@@ -58,7 +58,8 @@ User Input → Collaborative Filtering → Top 20 Products → Sentiment Analysi
    *Note: NLTK data will be downloaded automatically on first run*
 
 4. **Access the web interface**
-   - Open your browser and navigate to `http://localhost:9000`
+   - **Local Development**: Open your browser and navigate to `http://localhost:9000`
+   - **Production/Cloud**: The app will use the port assigned by your hosting platform
    - Enter a username to get personalized recommendations
 
 ## 📁 Project Structure
@@ -105,6 +106,7 @@ sentiment-recommendation-system/
 ### Example API Usage
 
 ```bash
+# For local development (replace with your deployed URL for production)
 # Get recommendations for a user
 curl http://localhost:9000/api/recommend/john_doe
 
@@ -113,6 +115,9 @@ curl http://localhost:9000/api/users
 
 # Validate a user
 curl http://localhost:9000/api/validate/john_doe
+
+# For production deployment on Render:
+# curl https://your-app-name.onrender.com/api/recommend/john_doe
 ```
 
 ## 🧠 Machine Learning Models
@@ -218,5 +223,32 @@ jupyter notebook Final_sentiment_based_product_recommendation_system.ipynb
 - Recommendation system development and comparison
 - Model selection using multiple criteria
 
+## 🚀 Deployment
+
+### Deploying to Render
+
+The application is configured for easy deployment to Render:
+
+1. **Connect your GitHub repository** to Render
+2. **Create a new Web Service** with these settings:
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python app.py`
+   - **Environment**: Python 3
+3. **Environment Variables** (optional):
+   - `FLASK_ENV=development` (only if you want debug mode enabled)
+   - **Note**: Render automatically sets `PORT`, but not `FLASK_ENV`
+4. **Port Configuration**: The app automatically detects Render's assigned port
+
+**Note**: The app will automatically:
+- Use Render's assigned port (Render sets `PORT` environment variable)
+- Run in production mode (debug disabled by default)
+- Download NLTK data on first startup
+
+### Other Cloud Platforms
+
+For deployment to other platforms (Heroku, AWS, etc.), ensure:
+- The platform sets the `PORT` environment variable
+- Python 3.8+ is available
+- All dependencies in `requirements.txt` are installed
 
 ⭐ **Star this repository if you found it helpful!**
