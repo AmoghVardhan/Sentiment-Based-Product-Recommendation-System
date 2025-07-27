@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Sentiment-Based Product Recommendation System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary mb-3">
+                <i class="fas fa-robot me-3"></i>
+                Smart Product Recommendations
+            </h1>
+            <p class="lead text-muted">
+                Get personalized product recommendations powered by advanced sentiment analysis and collaborative filtering
+            </p>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="card shadow-lg">
+            <div class="card-body p-5">
+                <h3 class="card-title text-center mb-4">
+                    <i class="fas fa-user-circle me-2 text-primary"></i>
+                    Enter Your Username
+                </h3>
+                
+                <form method="POST" action="{{ url_for('recommend') }}" onsubmit="return validateForm()">
+                    <div class="mb-4">
+                        <label for="username" class="form-label fw-bold">
+                            <i class="fas fa-user me-2"></i>Username
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="username" 
+                               name="username" 
+                               placeholder="Enter your username (e.g., john_doe)"
+                               required
+                               autocomplete="off">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Enter a username from our system to get personalized recommendations
+                        </div>
+                    </div>
+
+                    <!-- Sample Users Dropdown -->
+                    {% if sample_users %}
+                    <div class="mb-4">
+                        <label for="sample_users" class="form-label fw-bold">
+                            <i class="fas fa-list me-2"></i>Or select from sample users
+                        </label>
+                        <select class="form-select form-select-lg" id="sample_users" onchange="selectUser(this.value)">
+                            <option value="">-- Select a sample user --</option>
+                            {% for user in sample_users %}
+                            <option value="{{ user }}">{{ user }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">
+                            <i class="fas fa-lightbulb me-1"></i>
+                            Choose from {{ sample_users|length }} sample users in our system
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic me-2"></i>
+                            Get My Recommendations
+                        </button>
+                        
+                        <!-- Loading Spinner -->
+                        <div class="loading text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Analyzing your preferences...</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">
+                    <i class="fas fa-cogs me-2 text-primary"></i>
+                    How It Works
+                </h3>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-users fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">1. Collaborative Filtering</h5>
+                        <p class="card-text">
+                            We analyze products you've rated and find similar items based on how other users rated them.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-heart fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">2. Sentiment Analysis</h5>
+                        <p class="card-text">
+                            Our AI analyzes product reviews to understand customer sentiment and filter out products with negative feedback.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-star fa-3x text-warning"></i>
+                        </div>
+                        <h5 class="card-title">3. Smart Ranking</h5>
+                        <p class="card-text">
+                            We combine collaborative filtering with sentiment scores to give you the top 5 products with the best reviews.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-3">
+                            <i class="fas fa-sparkles me-2 text-primary"></i>
+                            Key Features
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        Personalized recommendations based on your history
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        Advanced sentiment analysis of product reviews
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        Machine learning powered predictions
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        Real-time recommendation generation
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        Quality filtering based on customer sentiment
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        Top 5 curated product suggestions
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function selectUser(username) {
+        if (username) {
+            document.getElementById('username').value = username;
+        }
+    }
+
+    // Add some interactivity
+    document.addEventListener('DOMContentLoaded', function() {
+        // Focus on username input
+        document.getElementById('username').focus();
+        
+        // Add typing effect for placeholder
+        const usernameInput = document.getElementById('username');
+        const originalPlaceholder = usernameInput.placeholder;
+        
+        usernameInput.addEventListener('focus', function() {
+            this.placeholder = 'Start typing...';
+        });
+        
+        usernameInput.addEventListener('blur', function() {
+            if (!this.value) {
+                this.placeholder = originalPlaceholder;
+            }
+        });
+    });
+</script>
+{% endblock %}

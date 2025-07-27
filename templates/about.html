@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}About - Sentiment-Based Product Recommendation System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-primary mb-3">
+                <i class="fas fa-info-circle me-3"></i>
+                About Our System
+            </h1>
+            <p class="lead text-muted">
+                Learn how our sentiment-based product recommendation system works
+            </p>
+        </div>
+
+        <!-- Project Overview -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-project-diagram me-2"></i>
+                    Project Overview
+                </h4>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    This is a sentiment-based product recommendation system built for an e-commerce company 'Ebuss'. 
+                    The system combines collaborative filtering with sentiment analysis to provide high-quality, 
+                    personalized product recommendations.
+                </p>
+                
+                <h5 class="mt-4 mb-3">Key Objectives:</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Analyze product reviews and build a sentiment analysis model
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Create both user-based and item-based recommendation systems
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Combine sentiment analysis with collaborative filtering
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Deploy the system with a user-friendly web interface
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Technical Architecture -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain me-2"></i>
+                            Machine Learning Models
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Sentiment Analysis:</h6>
+                        <ul class="small">
+                            <li>Logistic Regression</li>
+                            <li>Random Forest</li>
+                            <li>XGBoost</li>
+                            <li>Naive Bayes</li>
+                            <li>Neural Network Classifier</li>
+                        </ul>
+                        
+                        <h6 class="mt-3">Recommendation Systems:</h6>
+                        <ul class="small">
+                            <li>User-based Collaborative Filtering</li>
+                            <li>Item-based Collaborative Filtering</li>
+                            <li>Cosine Similarity</li>
+                        </ul>
+                        
+                        <h6 class="mt-3">Text Processing:</h6>
+                        <ul class="small">
+                            <li>TF-IDF Vectorization</li>
+                            <li>Bag of Words</li>
+                            <li>NLTK for preprocessing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>
+                            Technology Stack
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Backend:</h6>
+                        <ul class="small">
+                            <li>Python 3.8+</li>
+                            <li>Flask Web Framework</li>
+                            <li>Scikit-learn</li>
+                            <li>Pandas & NumPy</li>
+                            <li>NLTK</li>
+                        </ul>
+                        
+                        <h6 class="mt-3">Frontend:</h6>
+                        <ul class="small">
+                            <li>HTML5 & CSS3</li>
+                            <li>Bootstrap 5</li>
+                            <li>JavaScript</li>
+                            <li>Font Awesome Icons</li>
+                        </ul>
+                        
+                        <h6 class="mt-3">Data:</h6>
+                        <ul class="small">
+                            <li>30,000 product reviews</li>
+                            <li>200+ different products</li>
+                            <li>20,000+ unique users</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">
+                    <i class="fas fa-gear me-2"></i>
+                    How It Works
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>1. Data Processing</h5>
+                        <ul class="small text-muted">
+                            <li>Clean and preprocess review text</li>
+                            <li>Handle missing values and outliers</li>
+                            <li>Extract features using TF-IDF</li>
+                            <li>Create user-item rating matrix</li>
+                        </ul>
+                        
+                        <h5 class="mt-3">2. Model Training</h5>
+                        <ul class="small text-muted">
+                            <li>Train multiple sentiment analysis models</li>
+                            <li>Build collaborative filtering systems</li>
+                            <li>Evaluate and select best models</li>
+                            <li>Optimize hyperparameters</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>3. Recommendation Generation</h5>
+                        <ul class="small text-muted">
+                            <li>Generate top 20 CF recommendations</li>
+                            <li>Calculate sentiment scores for products</li>
+                            <li>Combine CF and sentiment scores</li>
+                            <li>Select top 5 final recommendations</li>
+                        </ul>
+                        
+                        <h5 class="mt-3">4. Web Interface</h5>
+                        <ul class="small text-muted">
+                            <li>User-friendly Flask web application</li>
+                            <li>Real-time recommendation generation</li>
+                            <li>Interactive results visualization</li>
+                            <li>Responsive design for all devices</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    System Performance
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <div class="h4 text-primary">96%+</div>
+                        <small class="text-muted">Sentiment Model F1-Score</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="h4 text-success">< 0.91</div>
+                        <small class="text-muted">Recommendation RMSE</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="h4 text-warning">< 2s</div>
+                        <small class="text-muted">Response Time</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="h4 text-info">30K</div>
+                        <small class="text-muted">Reviews Analyzed</small>
+                    </div>
+                </div>
+                
+                <p class="mt-3 text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Performance metrics are based on cross-validation and test set evaluation.
+                </p>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-star me-2"></i>
+                    Key Features
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-robot text-primary me-2"></i>AI-Powered Recommendations</h6>
+                        <p class="small text-muted">
+                            Advanced machine learning algorithms analyze user behavior and product sentiment 
+                            to generate personalized recommendations.
+                        </p>
+                        
+                        <h6><i class="fas fa-heart text-danger me-2"></i>Sentiment-Enhanced Filtering</h6>
+                        <p class="small text-muted">
+                            Products are filtered based on customer sentiment analysis, ensuring you get 
+                            recommendations with positive reviews.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-users text-success me-2"></i>Collaborative Intelligence</h6>
+                        <p class="small text-muted">
+                            The system finds products that users rate similarly to ones you've enjoyed, ensuring personalized recommendations.
+                        </p>
+                        
+                        <h6><i class="fas fa-mobile-alt text-info me-2"></i>Responsive Design</h6>
+                        <p class="small text-muted">
+                            Fully responsive web interface that works seamlessly across desktop, tablet, 
+                            and mobile devices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-home me-2"></i>
+                Try the System
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

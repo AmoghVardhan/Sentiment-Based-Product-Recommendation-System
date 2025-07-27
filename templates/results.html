@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations for {{ username }} - Sentiment-Based Product Recommendation System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-primary mb-3">
+                <i class="fas fa-gift me-3"></i>
+                Your Personalized Recommendations
+            </h1>
+            <p class="lead text-muted">
+                Hello <strong>{{ username }}</strong>! Here are your top {{ total_recommendations }} product recommendations
+                based on sentiment analysis and collaborative filtering.
+            </p>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Get Recommendations for Another User
+            </a>
+        </div>
+
+        <!-- Recommendations -->
+        {% if recommendations %}
+        <div class="row">
+            {% for rec in recommendations %}
+            <div class="col-12 mb-4">
+                <div class="card recommendation-card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <!-- Rank Badge -->
+                            <div class="col-auto">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                     style="width: 50px; height: 50px; font-size: 1.5rem; font-weight: bold;">
+                                    {{ rec.final_rank }}
+                                </div>
+                            </div>
+                            
+                            <!-- Product Information -->
+                            <div class="col">
+                                <h5 class="card-title mb-2">
+                                    <i class="fas fa-box me-2 text-primary"></i>
+                                    {{ rec.product_name }}
+                                </h5>
+                                
+                                <!-- Metrics Row -->
+                                <div class="row g-2 mb-3">
+                                    <div class="col-auto">
+                                        <span class="sentiment-score">
+                                            <i class="fas fa-heart me-1"></i>
+                                            Sentiment: {{ rec.sentiment_score }}
+                                        </span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="rating-badge">
+                                            <i class="fas fa-star me-1"></i>
+                                            Rating: {{ rec.predicted_rating }}
+                                        </span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="badge bg-info">
+                                            <i class="fas fa-thumbs-up me-1"></i>
+                                            {{ rec.positive_percentage }}% Positive
+                                        </span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-comments me-1"></i>
+                                            {{ rec.total_reviews }} Reviews
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Progress Bars -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Sentiment Score</small>
+                                        <div class="progress mb-2" style="height: 8px;">
+                                            <div class="progress-bar bg-success" 
+                                                 style="width: {{ rec.sentiment_score }}%"
+                                                 aria-valuenow="{{ rec.sentiment_score }}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Predicted Rating</small>
+                                        <div class="progress mb-2" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" 
+                                                 style="width: {{ (rec.predicted_rating / 5 * 100) | round }}%"
+                                                 aria-valuenow="{{ rec.predicted_rating }}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Additional Info -->
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    This product was ranked #{{ rec.original_rank }} by collaborative filtering 
+                                    and promoted to #{{ rec.final_rank }} after sentiment analysis.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4">
+                            <i class="fas fa-chart-bar me-2 text-primary"></i>
+                            Recommendation Summary
+                        </h5>
+                        
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <div class="h3 text-primary mb-1">{{ total_recommendations }}</div>
+                                <small class="text-muted">Total Recommendations</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="h3 text-success mb-1">
+                                    {{ "%.1f"|format(recommendations|map(attribute='sentiment_score')|sum / recommendations|length) }}
+                                </div>
+                                <small class="text-muted">Avg Sentiment Score</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="h3 text-warning mb-1">
+                                    {{ "%.1f"|format(recommendations|map(attribute='predicted_rating')|sum / recommendations|length) }}
+                                </div>
+                                <small class="text-muted">Avg Predicted Rating</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="h3 text-info mb-1">
+                                    {{ "%.0f"|format(recommendations|map(attribute='positive_percentage')|sum / recommendations|length) }}%
+                                </div>
+                                <small class="text-muted">Avg Positive Reviews</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How These Were Selected -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            How These Recommendations Were Selected
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-step-forward me-2 text-primary"></i>Step 1: Collaborative Filtering</h6>
+                                <p class="small text-muted">
+                                    We found products that users rate similarly to ones you've enjoyed and generated 20 initial recommendations based on these patterns
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-step-forward me-2 text-success"></i>Step 2: Sentiment Analysis</h6>
+                                <p class="small text-muted">
+                                    We analyzed customer reviews for each recommended product using machine learning 
+                                    to calculate sentiment scores and filter the best products.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-step-forward me-2 text-warning"></i>Step 3: Smart Ranking</h6>
+                                <p class="small text-muted">
+                                    Products were re-ranked based on a combination of sentiment scores (70%) 
+                                    and average ratings (30%) to ensure quality recommendations.
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-step-forward me-2 text-info"></i>Step 4: Final Selection</h6>
+                                <p class="small text-muted">
+                                    The top 5 products with the highest combined scores were selected as your 
+                                    final personalized recommendations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- No Recommendations -->
+        <div class="text-center">
+            <div class="card">
+                <div class="card-body py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h4>No Recommendations Available</h4>
+                    <p class="text-muted">
+                        We couldn't generate recommendations for this user. This might happen if:
+                    </p>
+                    <ul class="list-unstyled text-muted">
+                        <li>• The user hasn't rated enough products</li>
+                        <li>• There are no similar users in the system</li>
+                        <li>• All potential recommendations have been filtered out</li>
+                    </ul>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Try Another User
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Add animation to recommendation cards
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.recommendation-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+</script>
+{% endblock %}
