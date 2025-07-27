@@ -15,7 +15,7 @@ A sophisticated machine learning-powered recommendation system that combines col
 - **🌐 Web Interface**: Clean, responsive Flask web application with Bootstrap UI
 - **📱 RESTful API**: JSON API endpoints for integration with other applications
 - **⚡ Real-time Processing**: Fast recommendation generation with optimized algorithms
-- **📈 Multiple ML Models**: Supports TF-IDF, Bag of Words, and Word2Vec text vectorization
+- **📈 Optimized ML Pipeline**: Evaluated multiple models (Logistic Regression, Random Forest, XGBoost, Neural Network, Naive Bayes) and vectorization methods (BOW, TF-IDF, Word2Vec) to select the best performing combination
 
 ## 🏗️ System Architecture
 
@@ -118,16 +118,18 @@ curl http://localhost:9000/api/validate/john_doe
 ## 🧠 Machine Learning Models
 
 ### 1. Sentiment Analysis Model
-- **Algorithm**: XGBoost Classifier
-- **Features**: TF-IDF vectorized text features
-- **Performance**: ~85% accuracy on test set
+- **Algorithm**: Logistic Regression (selected after comprehensive evaluation)
+- **Features**: Bag of Words (BOW) vectorized text features
+- **Performance**: 96.49% accuracy, 96.65% F1-score on test set
 - **Input**: Product review text
 - **Output**: Sentiment (Positive/Negative/Neutral) with confidence score
+- **Cross-validation**: 96.33% ± 0.32% accuracy across 5 folds
 
 ### 2. Collaborative Filtering System
 - **Algorithm**: Item-based Collaborative Filtering
 - **Similarity Metric**: Cosine similarity
-- **Matrix**: User-item rating matrix
+- **Matrix**: User-item rating matrix (24,751 users × 267 items)
+- **Performance**: RMSE of 0.9136 (outperformed User-based CF with RMSE 1.6355)
 - **Output**: Top 20 product recommendations with predicted ratings
 
 ### 3. Sentiment Enhancement
@@ -137,10 +139,56 @@ curl http://localhost:9000/api/validate/john_doe
 
 ## 📊 Performance Metrics
 
-- **Recommendation Accuracy**: ~78% user satisfaction
-- **Sentiment Classification**: 85% accuracy
+### Sentiment Analysis Model Performance
+- **Best Model**: Logistic Regression with BOW features
+- **Accuracy**: 96.49%
+- **Precision**: 96.91%
+- **Recall**: 96.49%
+- **F1-Score**: 96.65%
+- **ROC AUC**: 96.17%
+- **Specificity**: 81.74%
+- **Training Time**: 0.10 seconds
+- **Prediction Time**: <0.001 seconds
+
+### Recommendation System Performance
+- **Algorithm**: Item-based Collaborative Filtering
+- **RMSE**: 0.9136 (Root Mean Squared Error)
+- **MAE**: 0.6321 (Mean Absolute Error)
+- **Matrix Sparsity**: 99.59%
 - **Response Time**: <2 seconds for recommendations
 - **System Throughput**: 100+ concurrent users supported
+
+## 🔬 Model Evaluation & Selection
+
+### Sentiment Analysis Model Comparison
+The system evaluated 5 different machine learning models with 3 vectorization methods:
+
+| Model | Accuracy | Precision | Recall | F1-Score | ROC AUC | Training Time |
+|-------|----------|-----------|--------|----------|---------|---------------|
+| **Logistic Regression** | **96.49%** | **96.91%** | **96.49%** | **96.65%** | **96.17%** | **0.10s** |
+| Random Forest | 97.12% | 97.13% | 97.12% | 96.72% | 96.07% | 0.49s |
+| Neural Network | 97.12% | 97.00% | 97.12% | 96.81% | 94.81% | 173.98s |
+| XGBoost | 93.29% | 95.99% | 93.29% | 94.21% | 96.45% | 0.62s |
+| Naive Bayes | 94.50% | 95.95% | 94.50% | 95.03% | 95.31% | 0.00s |
+
+**Selection Rationale**: Logistic Regression was selected using a multi-criteria approach considering:
+- Composite score (weighted average of all metrics)
+- Sensitivity-specificity balance
+- Multi-criteria decision analysis (MCDA)
+- Traditional F1-score evaluation
+
+### Vectorization Method Comparison
+| Method | Accuracy | Features | Sparsity |
+|--------|----------|----------|----------|
+| **Bag of Words (BOW)** | **97.56%** | 5,000 | 99.57% |
+| TF-IDF | 97.24% | 5,000 | 99.57% |
+| Word2Vec | 96.97% | 100 (dense) | N/A |
+
+### Recommendation System Comparison
+| System | RMSE | MAE | MSE | Predictions |
+|--------|------|-----|-----|-------------|
+| User-Based CF | 1.6355 | 1.4455 | 2.6748 | 1,000 |
+| **Item-Based CF** | **0.9136** | **0.6321** | **0.8346** | **1,000** |
 
 ## 🛠️ Development
 
@@ -153,13 +201,22 @@ export FLASK_DEBUG=1
 python app.py
 ```
 
-### Model Training
+### Model Training & Evaluation
 
-The system includes pre-trained models, but you can retrain them using the Jupyter notebook:
+The system includes pre-trained models, but you can explore the complete model development process using the Jupyter notebook:
 
 ```bash
 jupyter notebook Final_sentiment_based_product_recommendation_system.ipynb
 ```
+
+**The notebook includes:**
+- Data preprocessing and cleaning
+- Feature extraction (BOW, TF-IDF, Word2Vec)
+- Comprehensive model evaluation (5 ML algorithms)
+- Hyperparameter tuning with GridSearchCV
+- Cross-validation and performance analysis
+- Recommendation system development and comparison
+- Model selection using multiple criteria
 
 
 ⭐ **Star this repository if you found it helpful!**
