@@ -216,4 +216,11 @@ if __name__ == '__main__':
     print("All required files found. Starting Flask application...")
     
     # Run the Flask app
-    app.run(debug=True, host='0.0.0.0', port=9000)
+    # Get port from environment variable (for cloud deployment) or default to 9000 for local
+    port = int(os.environ.get('PORT', 9000))
+
+    # Set debug=False for production deployment (Render doesn't set FLASK_ENV)
+    # Debug is only enabled if explicitly set to 'development'
+    debug_mode = os.environ.get('FLASK_ENV') == 'development'
+
+    app.run(debug=debug_mode, host='0.0.0.0', port=port)
